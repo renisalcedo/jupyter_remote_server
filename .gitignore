@@ -1,5 +1,5 @@
-
 venv/
+config.py
 
 *.pyc
 __pycache__/
@@ -13,4 +13,3 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-
