@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 ma = Marshmallow()
 db = SQLAlchemy()
 
-class User(db.Model):
+class UserModel(db.Model):
     """ Model for the user
     :type id: int
     :type username: str
@@ -19,7 +19,11 @@ class User(db.Model):
     username = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
     job = db.Column(db.String(250), nullable=True)
-    notebooks = db.relationship('Notebook', backref='user', lazy=True)
+    # notebooks = db.relationship('Notebook', backref='user', lazy=True)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
 
 class UserSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
