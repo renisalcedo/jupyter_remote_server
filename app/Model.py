@@ -19,14 +19,51 @@ class UserModel(db.Model):
     username = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
     job = db.Column(db.String(250), nullable=True)
-    # notebooks = db.relationship('Notebook', backref='user', lazy=True)
+    notebooks = db.relationship('notebooks', backref='users', lazy=True)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, job):
         self.username = username
         self.password = password
+        self.job = job
 
 class UserSchema(ma.Schema):
+    """ Schema for the user
+    :type id: Int
+    :type username: Str
+    :type password: Str
+    :type job: Str
+    """
     id = fields.Integer(dump_only=True)
     username = fields.String(required=True, validate=validate.Length(3))
     password = fields.String(required=True, validate=validate.Length(8))
     job = fields.String(validate=validate.Length(2))
+
+class NotebookModel(db.Model):
+    """ Model for the notebook
+    :type name: str
+    :type id: int
+    :type password: str
+    :type user: UserModel
+    """
+    __tablename__ = 'notebooks'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(250), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, name, password, user_id):
+        self.name = name
+        self.password = password
+        self.user_id = user_id
+
+class NotebookSchema(ma.Schema):
+    """ Schema for the notebook
+    :type id: Int
+    :type name: Str
+    :type password: Str
+    :type user_id: Int
+    """
+    id = fields.Integer(dunp_only=True)
+    name = fields.String(required=True, validate=validate.Length(3))
+    password = fields.String(required=True, validate=validate.Length(8))
+    user_id = fields.Integer(required=True)

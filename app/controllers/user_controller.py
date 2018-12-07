@@ -17,12 +17,19 @@ class User(Resource):
         """ Creates user with the sent data
         :type username: str
         :type password: str
+        :type job: str (optional)
         """
         json_data = request.get_json(force=True)
         not_valid = self.is_valid(json_data)
 
         # Only processes data when its valid
         if not not_valid:
+            if not 'job' in json_data:
+                job = None
+            else:
+                job = json_data['job']
+
+
             user = UserModel(
                 username=json_data['username'],
                 password=json_data['password']
