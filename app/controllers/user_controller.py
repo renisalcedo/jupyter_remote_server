@@ -29,10 +29,10 @@ class User(Resource):
             else:
                 job = json_data['job']
 
-
             user = UserModel(
                 username=json_data['username'],
-                password=json_data['password']
+                password=json_data['password'],
+                job=job
             )
 
             db.session.add(user)

@@ -1,14 +1,17 @@
 from flask_restful import Resource
 from flask import request
-from ..Model import db, NotebookModel, NotebookSchema
+from IPython.lib import passwd
+from ..Model import db, NotebookModel, NotebookSchema, UserModel
 
-notebooks_schema = NotebookSchema(many=True)
-notebooks_schemas = NotebookSchema()
-
+notebook_schemas = NotebookSchema(many=True)
+notebook_schema = NotebookSchema()
 
 class Notebook(Resource):
     def get(self):
-        return {"Message": "Hello From Notebook"}
+        notebooks = NotebookModel.query.all()
+        notebooks = notebook_schemas.dump(notebooks).data
+
+        return { "status": "Success", 'data': notebooks }, 200
 
     def post(self):
         """ Creates user with the sent data
@@ -18,17 +21,21 @@ class Notebook(Resource):
         :rtype result: Json
         """
         json_data = request.get_json(force=True)
+        user = UserModel.query.filter_by(id=json_data['user_id']).first()
+
+        # Hashed password for jupyter notebook
+        password = passwd(json_data['password'])
 
         # Only processes data when its valid
         notebook = NotebookModel(
             name=json_data['name'],
-            password=json_data['password'],
+            password=password,
             user_id = json_data['user_id']
         )
 
         db.session.add(notebook)
         db.session.commit()
 
-        result = notebooks_schema.dump(notebook).data
+        result = notebook_schema.dump(notebook).data
 
         return {"Status": "Success", 'data': result}, 200
