@@ -21,7 +21,6 @@ class Notebook(Resource):
         :rtype result: Json
         """
         json_data = request.get_json(force=True)
-        user = UserModel.query.filter_by(id=json_data['user_id']).first()
 
         # Hashed password for jupyter notebook
         password = passwd(json_data['password'])
