@@ -1,11 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from IPython.lib import passwd
-from ..Model import db, NotebookModel, NotebookSchema, UserModel
-
-notebook_schemas = NotebookSchema(many=True)
-notebook_schema = NotebookSchema()
-
+from ..Model import UserModel
 
 class UserNotebook(Resource):
     def get(self):
@@ -13,13 +8,9 @@ class UserNotebook(Resource):
 
     def post(self):
         """creates the users
-        :type NotebookName: str
         :type user_id: Int
-
         :rtype result: Json
         """
-
-
         json_data = request.get_json(force=True)
 
         user_id = json_data['user_id']
@@ -31,11 +22,9 @@ class UserNotebook(Resource):
 
     def get_user_notebooks(self, notebooks):
         """ this creates a loop so that it can print every notebook in the json
-
-        :param notebooks:
-        :return:
+        :type notebooks: List[Notebooks]
+        :rtype res: List[JSON]
         """
-
         res = []
 
         for notebook in notebooks:
