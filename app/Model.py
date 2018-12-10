@@ -20,7 +20,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(250), nullable=False)
     job = db.Column(db.String(250), nullable=True)
     # Relation with the notebooks
-    notebooks = db.relationship("NotebookModel")
+    notebooks = db.relationship("NotebookModel", backref='users')
  
     def __init__(self, username, password, job):
         self.username = username
