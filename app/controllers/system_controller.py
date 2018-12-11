@@ -9,6 +9,11 @@ class SystemController:
         self.linux_user = linux_user
         self.jupyter_name = jupyter_name
 
+        """ Passes the linux username to create a new user
+        """
+
+        os.system("useradd {0}".format(linux_user))
+
     def init_files(self, data):
         """ Initializes all files and folders for the cert and jupyter
         :type data: Str
