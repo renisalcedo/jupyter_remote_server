@@ -26,6 +26,7 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
         self.job = job
+        
 
 class UserSchema(ma.Schema):
     """ Schema for the user
@@ -51,11 +52,14 @@ class NotebookModel(db.Model):
     name = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    port = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, password, user_id):
+
+    def __init__(self, name, password, user_id, port):
         self.name = name
         self.password = password
         self.user_id = user_id
+        self.port = port 
 
 class NotebookSchema(ma.Schema):
     """ Schema for the notebook
@@ -68,3 +72,4 @@ class NotebookSchema(ma.Schema):
     name = fields.String(required=True, validate=validate.Length(3))
     password = fields.String(required=True, validate=validate.Length(8))
     user_id = fields.Integer(required=True)
+    port = fields.Integer(required=True)

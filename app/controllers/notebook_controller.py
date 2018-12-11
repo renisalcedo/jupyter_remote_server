@@ -28,12 +28,14 @@ class Notebook(Resource):
 
         # Hashed password for jupyter notebook
         password = passwd(json_data['password'])
+        port = 8888 # temporary
 
         # Only processes data when its valid
         notebook = NotebookModel(
             name=json_data['name'],
             password=password,
-            user_id = json_data['user_id']
+            user_id = json_data['user_id'],
+            port = port
         )
 
         # Creates the notebook with the given data
