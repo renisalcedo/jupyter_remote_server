@@ -19,8 +19,9 @@ class UserModel(db.Model):
     username = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
     job = db.Column(db.String(250), nullable=True)
-    notebooks = db.relationship('notebooks', backref='users', lazy=True)
-
+    # Relation with the notebooks
+    notebooks = db.relationship("NotebookModel", backref='users')
+ 
     def __init__(self, username, password, job):
         self.username = username
         self.password = password
@@ -49,7 +50,7 @@ class NotebookModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, name, password, user_id):
         self.name = name
