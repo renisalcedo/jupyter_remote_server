@@ -23,7 +23,7 @@ class SystemController:
         os.mkdir(self.jupyter_name)
         os.chdir(self.jupyter_name)
         print(os.system('pwd'))
-        os.system('jupyter notebook')
+        os.system('screen -d -m jupyter notebook')
 
     def init_cert(self):
         """ Initializes the cert folder and files """
@@ -38,7 +38,7 @@ class SystemController:
 
     def init_cert_file(self):
         """ Generates certificate file for the cert """
-        os.system('openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykey.key -out mycert.pem')
+        os.system('openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykey.key -out mycert.pem -subj \"/CN=www.mydom.com/O=My Company Name LTD./C=US\"')
 
     def init_jupyter(self, data):
         """ Inializes Jupyter notebook setting files with the data
