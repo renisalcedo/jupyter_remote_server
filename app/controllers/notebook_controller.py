@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from IPython.lib import passwd
+from sqlalchemy.sql import func
 from ..Model import db, NotebookModel, NotebookSchema, UserModel
 
 # Configuration classes
@@ -28,8 +29,10 @@ class Notebook(Resource):
 
         # Hashed password for jupyter notebook
         password = passwd(json_data['password'])
-        port = 8888 # temporary
 
+        # New Port number for new notebook
+        port = self.get_new_port()
+        
         # Only processes data when its valid
         notebook = NotebookModel(
             name=json_data['name'],
@@ -51,14 +54,21 @@ class Notebook(Resource):
         """ Creates Notebook and sets system with given data
         :type json_data: Dic
         """
-        port = 8888
         ip = '127.0.0.1'
-        name = notebook.name
 
         # Initializes the notebook with given data
-        notebook_setting = NotebookSetting(notebook.password, port)
-        notebook_system = SystemController(name, name, ip)
+        notebook_setting = NotebookSetting(notebook.password, notebook.port)
+        notebook_system = SystemController(notebook.name, notebook.name, notebook.port, ip)
 
         # Creates and executes the notebook on the system
-        notebook_data = notebook_setting.setting(name, ip)
+        notebook_data = notebook_setting.setting(notebook.name, ip)
         notebook_system.init_files(notebook_data)
+
+    def get_new_port(self):
+        """ Returns a new port number everytime
+        :rtype port: Int
+        """
+        max_port_number = db.session.query(func.max(NotebookModel.port).label('port_number')).one()
+        port = max_port_number[0] + 1
+
+        return port

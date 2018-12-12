@@ -2,13 +2,14 @@ import os
 import subprocess
 
 class SystemController:
-    def __init__(self, linux_user, jupyter_name, ip='127.0.0.1'):
+    def __init__(self, linux_user, jupyter_name, port, ip='127.0.0.1'):
         """ Initializes the System controller class
         :type ip: Str
         """
         self.ip = ip
         self.linux_user = linux_user
         self.jupyter_name = jupyter_name
+        self.port = port
 
         """ Passes the linux username to create a new user """
         os.system("adduser --disabled-password --gecos \"\" {0}".format(self.linux_user))
