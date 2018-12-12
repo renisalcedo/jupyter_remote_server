@@ -54,12 +54,11 @@ class Notebook(Resource):
         port = 8888
         ip = '127.0.0.1'
         name = notebook.name
-        # Initializes the notebook with given data
-        name = 'genone' # TEMPORARY USER NAME TO TEST LOCALLY
 
+        # Initializes the notebook with given data
         notebook_setting = NotebookSetting(notebook.password, port)
         notebook_system = SystemController(name, name, ip)
 
         # Creates and executes the notebook on the system
-        notebook_data = notebook_setting.setting(name)
+        notebook_data = notebook_setting.setting(name, ip)
         notebook_system.init_files(notebook_data)
