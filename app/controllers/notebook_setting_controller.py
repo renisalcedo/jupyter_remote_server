@@ -1,5 +1,5 @@
 class NotebookSetting:
-    def __init__(self, password, port=8888):
+    def __init__(self, password, port):
         """ Initializes the notebook setting class
         :type password: Str
         :type port: Int
