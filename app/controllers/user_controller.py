@@ -1,3 +1,4 @@
+import hashlib, uuid
 from flask import request
 from flask_restful import Resource
 from ..Model import db, UserModel, UserSchema
@@ -28,10 +29,13 @@ class User(Resource):
                 job = None
             else:
                 job = json_data['job']
-
+            # hashing password before saving 
+            salt = uuid.uuid4().hex
+            hashed_password = hashlib.sha512(json_data['password'].encode('utf-8') + salt.encode('utf-8')).hexdigest()
+            
             user = UserModel(
                 username=json_data['username'],
-                password=json_data['password'],
+                password=hashed_password,
                 job=job
             )
 
