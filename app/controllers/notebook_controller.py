@@ -66,8 +66,8 @@ class Notebook(Resource):
         notebook_system = SystemController(notebook.name, notebook.name, notebook.port, ip)
 
         # Creates and executes the notebook on the system
-         notebook_data = notebook_setting.setting(notebook.name, ip)
-         notebook_system.init_files(notebook_data)
+        notebook_data = notebook_setting.setting(notebook.name, ip)
+        notebook_system.init_files(notebook_data)
 
     def get_new_port(self):
         """ Returns a new port number everytime
@@ -104,4 +104,3 @@ class Notebook(Resource):
             return {'Message': 'Notebook already exist'}, 400
 
         return False
-
