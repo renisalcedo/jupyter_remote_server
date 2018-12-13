@@ -26,29 +26,34 @@ class Notebook(Resource):
         :rtype result: Json
         """
         json_data = request.get_json(force=True)
+        not_valid = self.is_valid(json_data)
 
-        # Hashed password for jupyter notebook
-        password = passwd(json_data['password'])
+        if not not_valid:
+            # Hashed password for jupyter notebook
+            password = passwd(json_data['password'])
 
-        # New Port number for new notebook
-        port = self.get_new_port()
-        
-        # Only processes data when its valid
-        notebook = NotebookModel(
-            name=json_data['name'],
-            password=password,
-            user_id = json_data['user_id'],
-            port = port
-        )
+            # New Port number for new notebook
+            port = self.get_new_port()
 
-        # Creates the notebook with the given data
-        self.create_notebook(notebook)
+            # Only processes data when its valid
+            notebook = NotebookModel(
+                name=json_data['name'],
+                password=password,
+                user_id=json_data['user_id'],
+                port=port
+            )
 
-        db.session.add(notebook)
-        db.session.commit()
+            # Creates the notebook with the given data
+            self.create_notebook(notebook)
 
-        result = notebook_schema.dump(notebook).data
-        return {"Status": "Success", 'data': result}, 200
+            db.session.add(notebook)
+            db.session.commit()
+
+            result = notebook_schema.dump(notebook).data
+            return {"Status": "Success", 'data': result}, 200
+
+        return not_valid
+
 
     def create_notebook(self, notebook):
         """ Creates Notebook and sets system with given data
@@ -61,14 +66,42 @@ class Notebook(Resource):
         notebook_system = SystemController(notebook.name, notebook.name, notebook.port, ip)
 
         # Creates and executes the notebook on the system
-        notebook_data = notebook_setting.setting(notebook.name, ip)
-        notebook_system.init_files(notebook_data)
+         notebook_data = notebook_setting.setting(notebook.name, ip)
+         notebook_system.init_files(notebook_data)
 
     def get_new_port(self):
         """ Returns a new port number everytime
         :rtype port: Int
         """
         max_port_number = db.session.query(func.max(NotebookModel.port).label('port_number')).one()
-        port = max_port_number[0] + 1
+        max_port_number = max_port_number[0]
+
+        if max_port_number:
+            port = max_port_number + 1
+        else:
+            port = 8000
 
         return port
+
+    def is_valid(self, json_data):
+        """ Ensures the data can be added to the database
+        :type json_data: json
+        :rtype str
+        """
+        if not json_data:
+            return {'Message': 'No data provided'}, 400
+
+        # Data cannot be processed
+        data, errors = notebook_schema.load(json_data)
+
+        if errors and 'port' not in errors:
+            return errors, 422
+
+        # Finds the notebook in the database
+        notebook = NotebookModel.query.filter_by(name=data['name']).first()
+
+        if notebook:
+            return {'Message': 'Notebook already exist'}, 400
+
+        return False
+
