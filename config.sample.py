@@ -6,3 +6,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@localhost/jupyter_remote'
 SECRET='The_Secret_Goes_Here'
 IP="The_IP_Goes_Here"
+PUBLIC="PUBLIC_ACCESIBLE_URL"

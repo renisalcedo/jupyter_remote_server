@@ -53,13 +53,14 @@ class NotebookModel(db.Model):
     password = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     port = db.Column(db.Integer, nullable=False)
+    url = db.Column(db.String(250), nullable=False)
 
-
-    def __init__(self, name, password, user_id, port):
+    def __init__(self, name, password, user_id, port, url):
         self.name = name
         self.password = password
         self.user_id = user_id
         self.port = port 
+        self.url = url
 
 class NotebookSchema(ma.Schema):
     """ Schema for the notebook
@@ -73,3 +74,4 @@ class NotebookSchema(ma.Schema):
     password = fields.String(required=True, validate=validate.Length(8))
     user_id = fields.Integer(required=True)
     port = fields.Integer(required=True)
+    url = fields.String(required=True)
