@@ -53,5 +53,7 @@ class SystemController:
         os.system("cp -r /home/ubuntu/.jupyter {0}".format(linux_user_path))
 
         # Writes data to file
-        with open('/home/{0}/.jupyter/jupyter_notebook_config.py'.format(self.linux_user), "a") as file:
+        path = '/home/{0}/.jupyter/jupyter_notebook_config.py'.format(self.linux_user)
+        os.system("chmod 777 {0}".format(path))
+        with open(path, "a") as file:
             file.write("\n{0}".format(data))
