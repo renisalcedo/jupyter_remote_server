@@ -1,4 +1,5 @@
 from flask import Flask
+import config
 
 def create_app(config_filename):
     """ Creates a new flask application
@@ -18,4 +19,9 @@ def create_app(config_filename):
 
 if __name__ == '__main__':
     app = create_app('config')
+    if config.PRODUCTION:
+        running_ip = '0.0.0.0'
+    else:
+        running_ip = '127.0.0.1'
+
     app.run(debug=True)
