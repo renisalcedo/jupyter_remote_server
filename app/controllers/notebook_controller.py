@@ -7,6 +7,7 @@ from ..Model import db, NotebookModel, NotebookSchema, UserModel
 # Configuration classes
 from .notebook_setting_controller import NotebookSetting
 from .system_controller import SystemController
+import config
 
 notebook_schemas = NotebookSchema(many=True)
 notebook_schema = NotebookSchema()
@@ -59,14 +60,12 @@ class Notebook(Resource):
         """ Creates Notebook and sets system with given data
         :type json_data: Dic
         """
-        ip = '127.0.0.1'
-
         # Initializes the notebook with given data
         notebook_setting = NotebookSetting(notebook.password, notebook.port)
-        notebook_system = SystemController(notebook.name, notebook.name, notebook.port, ip)
+        notebook_system = SystemController(notebook.name, notebook.name, notebook.port, config.IP)
 
         # Creates and executes the notebook on the system
-        notebook_data = notebook_setting.setting(notebook.name, ip)
+        notebook_data = notebook_setting.setting(notebook.name, config.IP)
         notebook_system.init_files(notebook_data)
 
     def get_new_port(self):
