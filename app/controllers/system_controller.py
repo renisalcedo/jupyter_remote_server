@@ -50,7 +50,7 @@ class SystemController:
         :type data: Str
         """
         linux_user_path = "/home/{0}".format(self.linux_user)   
-        os.system("cp -r /home/genone/.jupyter {0}".format(linux_user_path))
+        os.system("cp -r /home/ubuntu/.jupyter {0}".format(linux_user_path))
 
         # Writes data to file
         with open('/home/{0}/.jupyter/jupyter_notebook_config.py'.format(self.linux_user), "a") as file:
