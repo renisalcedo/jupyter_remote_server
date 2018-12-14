@@ -35,13 +35,15 @@ class Notebook(Resource):
 
             # New Port number for new notebook
             port = self.get_new_port()
+            url = "{0}:{1}".format(config.IP,port)
 
             # Only processes data when its valid
             notebook = NotebookModel(
                 name=json_data['name'],
                 password=password,
                 user_id=json_data['user_id'],
-                port=port
+                port=port,
+                url=url
             )
 
             # Creates the notebook with the given data
