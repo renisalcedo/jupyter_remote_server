@@ -24,4 +24,4 @@ if __name__ == '__main__':
     else:
         running_ip = '127.0.0.1'
 
-    app.run(debug=True)
+    app.run(host=running_ip)
