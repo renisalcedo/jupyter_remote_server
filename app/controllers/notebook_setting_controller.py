@@ -15,7 +15,7 @@ class NotebookSetting:
         data = "c = get_config()\n\
             c.IPKernelApp.pylab = 'inline'\n\
             c.NotebookApp.certfile = '/home/{0}/certs/mycert.pem'\n\
-            c.NotebookApp.ip = {1}\n\
+            c.NotebookApp.ip = \"{1}\"\n\
             c.NotebookApp.open_browser = False\n\
             c.NotebookApp.password = \"{2}\"\n\
             c.NotebookApp.port = {3}".format(linux_user, ip, self.password, self.port)
