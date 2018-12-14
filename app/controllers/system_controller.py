@@ -12,7 +12,7 @@ class SystemController:
         self.port = port
 
         """ Passes the linux username to create a new user """
-        os.system("adduser --disabled-password --gecos \"\" {0}".format(self.linux_user))
+        os.system("adduser --disabled-password --force-badname --gecos \"\" {0}".format(self.linux_user))
 
     def init_files(self, data):
         """ Initializes all files and folders for the cert and jupyter
