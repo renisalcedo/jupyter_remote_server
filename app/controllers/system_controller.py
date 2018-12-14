@@ -29,6 +29,7 @@ class SystemController:
         os.system("chmod 777 {0}".format(self.jupyter_name))
         os.chdir(self.jupyter_name)
         os.system("echo \"screen -d -m jupyter notebook && exit\" > run.sh && chmod 777 run.sh && echo DONE...")
+        os.system("rm /home/{0}/certs/{0}/run.sh".format(self.jupyter_name))
         os.system("sudo -H -u {0} bash -c ./run.sh".format(self.linux_user))
 
     def init_cert(self):
