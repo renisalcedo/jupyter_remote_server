@@ -26,6 +26,7 @@ class SystemController:
     def run_jupyter(self):
         """ Runs jupyter nootebook with the specified name"""
         os.mkdir(self.jupyter_name)
+        os.system("chmod 777 {0}".format(self.jupyter_name))
         os.chdir(self.jupyter_name)
         os.system("echo \"screen -d -m jupyter notebook && exit\" > run.sh && chmod 777 run.sh && echo DONE...")
         os.system("sudo -H -u {0} bash -c ./run.sh".format(self.linux_user))
