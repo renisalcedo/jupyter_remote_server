@@ -1,4 +1,6 @@
+import jwt
 import bcrypt
+import config
 from flask import request
 from flask_restful import Resource
 from ..Model import db, UserModel, UserSchema
@@ -44,7 +46,11 @@ class User(Resource):
 
             result = user_schema.dump(user).data
 
-            return {"Status": "Success", 'data': result}, 200
+            # Creates JWT TOKEN
+            jwt_token =  str(jwt.encode(result, config.SECRET, algorithm='HS256'))
+
+            # Return Response data and token
+            return { "Status": "Success", "data": result, "token": jwt_token }, 200
 
         return not_valid
 
