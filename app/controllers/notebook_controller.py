@@ -35,7 +35,7 @@ class Notebook(Resource):
 
             # New Port number for new notebook
             port = self.get_new_port()
-            url = "{0}:{1}".format(config.IP,port)
+            url = "{0}:{1}".format(config.PUBLIC,port)
 
             # Only processes data when its valid
             notebook = NotebookModel(
