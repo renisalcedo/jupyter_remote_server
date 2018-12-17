@@ -30,6 +30,7 @@ class UserNotebook(Resource):
         for notebook in notebooks:
             data = {
                 "name": notebook.name,
+                "url": notebook.url,
                 "id": notebook.id
             }
 
